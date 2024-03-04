@@ -47,6 +47,7 @@ body {
   display: flex;
   gap: 2.4rem;
   justify-content: center;
+  overflow: hidden;
 }
 
 .box {
@@ -54,7 +55,7 @@ body {
   max-width: 42rem;
   background-color: var(--color-background-500);
   border-radius: 0.9rem;
-  overflow: scroll;
+  overflow-y: scroll;
   position: relative;
 }
 
@@ -138,7 +139,7 @@ body {
 .list {
   list-style: none;
   padding: 0.8rem 0;
-  overflow: scroll;
+  overflow-y: hidden;
 }
 
 .list-watched {
@@ -242,6 +243,7 @@ body {
 .details {
   line-height: 1.4;
   font-size: 1.4rem;
+  margin-top: 5rem;
 }
 
 .details header {
@@ -257,6 +259,9 @@ body {
 
 .details img {
   width: 33%;
+}
+.details img:hover {
+  cursor: pointer;
 }
 
 .details-overview {
