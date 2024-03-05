@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {URL} from "./config";
+import {URL} from "../components/config";
 
 export default function useAsyncDetail(id, setIsOpen3, setIsOpen2) {
 

@@ -4,9 +4,8 @@ import SearchResult from "./components/SearchResult";
 import DetailView from "./components/DetailView";
 import WatchedSummary from "./components/WatchedSummary";
 import WatchedMovie from "./components/WatchedMovie";
-import useAsyncHook from "./components/useAsyncHook";
-import useAsyncDetail from "./components/useAsyncDetail";
-import {logDOM} from "@testing-library/react";
+import useAsyncHook from "./hooks/useAsyncHook";
+import useAsyncDetail from "./hooks/useAsyncDetail";
 
 export default function App() {
 
@@ -21,7 +20,6 @@ export default function App() {
   const [detail, detailLoading] = useAsyncDetail(id, setIsOpen3, setIsOpen2);
   const [userRating, setUserRating] = useState(0);
 
-  console.log('user rating', userRating)
   useEffect(() => {
     const lcWatched = localStorage.getItem('watched');
     if (lcWatched)
@@ -44,6 +42,11 @@ export default function App() {
       setUserRating(0);
     }
   }
+  function handleDeleteWatched(id) {
+    setWatched(watched =>
+      watched.filter(movie => movie.imdbID !== id ));
+    localStorage.setItem('watched', JSON.stringify(watched));
+  }
 
   return (
        <>
@@ -54,11 +57,12 @@ export default function App() {
              <UserBtn onclick={() => setIsOpen1(open => !open)}>
                {isOpen1 ? "–" : "+"}
              </UserBtn>
-             { !loading && <ul className="list">
-                    {movies?.map((movie) =>
-                         <SearchResult key={movie.id} movie={movie} sendId={setId}/>
-                    )}
-                  </ul>
+             { !loading &&
+               <ul className="list">
+                {movies?.map((movie) =>
+                     <SearchResult key={movie.id} movie={movie} sendId={setId}/>
+                )}
+              </ul>
              }
            </div>
 
@@ -68,17 +72,18 @@ export default function App() {
              </UserBtn>
 
              {isOpen3 && detail && !detailLoading &&
-                  <DetailView
-                       detail={detail} addWatched={addWatched}
-                       userRating={userRating} setUserRating={setUserRating}/>}
+              <DetailView
+                   detail={detail} addWatched={addWatched}
+                   userRating={userRating} setUserRating={setUserRating}/>}
 
              {isOpen2 && (
-                  <>
-                    <WatchedSummary watched={watched}/>
-                    <ul className="list">
-                      {watched.map((movie) => <WatchedMovie key={movie.id} movie={movie}/>)}
-                    </ul>
-                  </>
+                <>
+                  <WatchedSummary watched={watched}/>
+                  <ul className="list">
+                    {watched.map((movie) =>
+                      <WatchedMovie key={movie.id} movie={movie} onDelete={handleDeleteWatched}/>)}
+                  </ul>
+                </>
              )}
            </div>
          </main>
@@ -86,8 +91,8 @@ export default function App() {
   );
 }
 
-function UserBtn({onclick, children}) {
-  return <button className="btn-toggle"
+export function UserBtn({onclick, children, classname="btn-toggle"}) {
+  return <button className={classname}
                  onClick={onclick}>
     {children}
   </button>

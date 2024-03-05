@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {URL} from "./config";
+import {URL} from "../components/config";
 
 function useAsyncHook(query) {
    const [movies, setMovies] = useState([]);

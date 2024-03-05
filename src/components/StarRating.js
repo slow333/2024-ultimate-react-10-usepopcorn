@@ -2,7 +2,6 @@ import {useState} from "react";
 
 function StarRating({userRating, setUserRating}) {
   const [temp, setTemp] = useState();
-  console.log(temp)
 
   let valueForColor = (temp === 0) ? userRating : temp
 
@@ -11,8 +10,8 @@ function StarRating({userRating, setUserRating}) {
            <Star key={idx}
                  fillColor={valueForColor > idx ? "orange" : 'white'}
                  width='2.8rem'
-                 onclick={() => setUserRating(idx+1)}
-                 mouseEnter={() => setTemp(idx+1)}
+                 onclick={() => setUserRating(idx + 1)}
+                 mouseEnter={() => setTemp(idx + 1)}
                  mouseLeave={() => setTemp(0)}
            />)}
    </div>
