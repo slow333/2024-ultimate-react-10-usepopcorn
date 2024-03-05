@@ -17,6 +17,7 @@ function useAsyncHook(query) {
             const data = await res.json();
             if (data.Response === 'False') throw new Error(`찾는 영화가 없어요 : ${res.status}`);
             setMovies(data.Search)
+            console.log(data.Search)
             setLoading(false)
          } catch (err) {
             console.log(err);

@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import NavBar from "./components/NavBar";
 import SearchResult from "./components/SearchResult";
 import DetailView from "./components/DetailView";
@@ -6,6 +6,7 @@ import WatchedSummary from "./components/WatchedSummary";
 import WatchedMovie from "./components/WatchedMovie";
 import useAsyncHook from "./hooks/useAsyncHook";
 import useAsyncDetail from "./hooks/useAsyncDetail";
+import StarRating from "./components/StarRating";
 
 export default function App() {
 
@@ -73,8 +74,10 @@ export default function App() {
 
              {isOpen3 && detail && !detailLoading &&
               <DetailView
-                   detail={detail} addWatched={addWatched}
-                   userRating={userRating} setUserRating={setUserRating}/>}
+                   detail={detail} addWatched={addWatched} >
+                <StarRating
+                  userRating={userRating} setUserRating={setUserRating}/>
+              </DetailView>}
 
              {isOpen2 && (
                 <>
@@ -92,8 +95,11 @@ export default function App() {
 }
 
 export function UserBtn({onclick, children, classname="btn-toggle"}) {
-  return <button className={classname}
-                 onClick={onclick}>
+  return (
+    <button
+      className={classname}
+      onClick={onclick}
+    >
     {children}
-  </button>
+  </button>)
 }

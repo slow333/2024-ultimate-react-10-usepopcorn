@@ -1,6 +1,6 @@
 import StarRating from "./StarRating";
 
-function DetailView({detail, addWatched, userRating, setUserRating}) {
+function DetailView({detail, addWatched, children}) {
   return (
     <div className='details'>
       <header>
@@ -14,7 +14,7 @@ function DetailView({detail, addWatched, userRating, setUserRating}) {
       </header>
       <section>
         <div className='rating'>
-          <StarRating userRating={userRating} setUserRating={setUserRating}/>
+          {children}
           <button className='btn-add'
                   onClick={() => addWatched(detail)}>Add Watched
           </button>
