@@ -10,7 +10,7 @@ import {logDOM} from "@testing-library/react";
 
 export default function App() {
 
-  const [query, setQuery] = useState("star");
+  const [query, setQuery] = useState("");
   const [movies, loading] = useAsyncHook(query);
   const [watched, setWatched] = useState([]);
   const [isOpen1, setIsOpen1] = useState(false);
@@ -54,9 +54,7 @@ export default function App() {
              <UserBtn onclick={() => setIsOpen1(open => !open)}>
                {isOpen1 ? "–" : "+"}
              </UserBtn>
-             {loading
-                  ? "loading"
-                  : <ul className="list">
+             { !loading && <ul className="list">
                     {movies?.map((movie) =>
                          <SearchResult key={movie.id} movie={movie} sendId={setId}/>
                     )}

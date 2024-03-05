@@ -2,6 +2,11 @@ import {useState} from "react";
 
 function NavBar({ setQuery, movies}) {
   const [search, setSearch] = useState("");
+  const style = {
+    background: "green", marginLeft: '2rem',
+    padding: '1rem 2rem', borderRadius: '1.3rem',
+    fontSize: '1.8rem'
+  }
 
   return (
        <nav className="nav-bar">
@@ -20,7 +25,8 @@ function NavBar({ setQuery, movies}) {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
            />
-           <button type='submit' className='btn-add' style={{background: "green", marginLeft: '2rem'}}>search</button>
+           <button type='submit' className='btn-add'
+                   style={style}>search</button>
          </form>
          <p className="num-results">
            Found <strong>{movies?.length}</strong> results
