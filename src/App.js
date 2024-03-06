@@ -59,6 +59,7 @@ export default function App() {
 
   function handleDetail(id) {
     setId(id);
+    setUserRating(rating => 0)
     handleToggle();
   }
 
@@ -84,7 +85,7 @@ export default function App() {
                  ? <Loading>Movie detail is loading <br/>😂😂😂</Loading>
                  : <Box onToggle={handleToggle}>
                    <DetailView detail={detail} addWatched={addWatched}>
-                     <StarRating userRating={userRating} setUserRating={setUserRating}/>
+                     <StarRating userRating={userRating} setUserRating={setUserRating} maxRating={9}/>
                    </DetailView>
                  </Box>)
            }

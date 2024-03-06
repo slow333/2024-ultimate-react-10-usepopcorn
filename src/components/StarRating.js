@@ -1,27 +1,41 @@
 import {useState} from "react";
+import PropTypes from "prop-types";
 
-function StarRating({userRating, setUserRating}) {
+const starContainer = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '6px'
+}
+StarRating.prototype = {
+  maxRating: PropTypes.number,
+  setUserRating: PropTypes.func,
+  userRating: PropTypes.number,
+}
+
+function StarRating({userRating, setUserRating, maxRating}) {
   const [temp, setTemp] = useState();
 
   let valueForColor = (temp === 0) ? userRating : temp
 
-   return <div>
-      {Array.from({length: 10}, (_, idx) =>
-           <Star key={idx}
-                 fillColor={valueForColor > idx ? "orange" : 'white'}
-                 width='2.8rem'
-                 onclick={() => setUserRating(idx + 1)}
-                 mouseEnter={() => setTemp(idx + 1)}
-                 mouseLeave={() => setTemp(0)}
-           />)}
-   </div>
+  return <div style={starContainer}>
+    {Array.from({length: maxRating}, (_, idx) =>
+         <Star key={idx}
+               fillColor={valueForColor > idx ? "orange" : 'white'}
+               width='2.8rem'
+               onRate={() => setUserRating(idx + 1)}
+               onHoverIn={() => setTemp(idx + 1)}
+               onHoverOut={() => setTemp(0)}
+         />)}
+    <p style={{fontSize: '1.8rem', marginLeft: '0.5rem', padding: 0}}>{userRating || ""}</p>
+  </div>
 }
 
 export default StarRating;
 
-function Star({fillColor, stroke='none', width, onclick, mouseEnter, mouseLeave }) {
-   return <span style={{display: 'inline-block', width: `${width}`}}
-                onClick={onclick} onMouseEnter={mouseEnter} onMouseLeave={mouseLeave}>
+function Star({fillColor, stroke = 'none', onRate, onHoverIn, onHoverOut}) {
+  return <span style={{width: '16rem'}}
+               onClick={onRate} onMouseEnter={onHoverIn} onMouseLeave={onHoverOut}>
       <svg
            xmlns="http://www.w3.org/2000/svg"
            viewBox="0 0 20 20"

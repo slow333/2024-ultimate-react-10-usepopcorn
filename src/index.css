@@ -172,7 +172,9 @@ body {
   width: 100%;
   grid-row: 1 / -1;
 }
-
+.list img:hover {
+  cursor: pointer;
+}
 .list h3 {
   font-size: 1.8rem;
 }
