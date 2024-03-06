@@ -7,18 +7,17 @@ import WatchedMovie from "./components/WatchedMovie";
 import useAsyncHook from "./hooks/useAsyncHook";
 import useAsyncDetail from "./hooks/useAsyncDetail";
 import StarRating from "./components/StarRating";
+import watchedMovie from "./components/WatchedMovie";
 
 export default function App() {
 
   const [query, setQuery] = useState("");
-  const [movies, loading] = useAsyncHook(query);
+  const [movies, movieLoading] = useAsyncHook(query);
   const [watched, setWatched] = useState([]);
-  const [isOpen1, setIsOpen1] = useState(false);
-  const [isOpen2, setIsOpen2] = useState(false);
-  const [isOpen3, setIsOpen3] = useState(true);
+  const [toggleShow, setToggleShow] = useState(false)
 
   const [id, setId] = useState("")
-  const [detail, detailLoading] = useAsyncDetail(id, setIsOpen3, setIsOpen2);
+  const [detail, detailLoading] = useAsyncDetail(id, setToggleShow);
   const [userRating, setUserRating] = useState(0);
 
   useEffect(() => {
@@ -37,69 +36,98 @@ export default function App() {
     if (userRating < 1) {
       alert('user rating is required !! 😂')
     } else {
-      setWatched(watched => [...watched, {...detail, userRating: userRating}]);
-      setIsOpen2(true);
-      setIsOpen3(false);
-      setUserRating(0);
+      if (watched.length > 0 && watched.find(w => w.imdbID === detail.imdbID)) alert('이미 리스트에 있어요.');
+      else {
+        setWatched(watched => [...watched, {...detail, userRating: userRating}]);
+        setUserRating(0);
+        setToggleShow(show => !show);
+      }
     }
   }
+
   function handleDeleteWatched(id) {
     setWatched(watched =>
-      watched.filter(movie => movie.imdbID !== id ));
+         watched.filter(movie => movie.imdbID !== id));
     localStorage.setItem('watched', JSON.stringify(watched));
+  }
+
+  function handleToggle() {
+    if (detail) {
+      setToggleShow(show => !show);
+    } else return;
+  }
+
+  function handleDetail(id) {
+    setId(id);
+    handleToggle();
   }
 
   return (
        <>
          <NavBar setQuery={setQuery} movies={movies}/>
 
-         <main className="main">
-           <div className="box">
-             <UserBtn onclick={() => setIsOpen1(open => !open)}>
-               {isOpen1 ? "–" : "+"}
-             </UserBtn>
-             { !loading &&
-               <ul className="list">
-                {movies?.map((movie) =>
-                     <SearchResult key={movie.id} movie={movie} sendId={setId}/>
-                )}
-              </ul>
+         <Main>
+           <Box onToggle={() => null}>
+             { movieLoading
+                  ? <Loading>Movie list is loading <br/>😂😂😂</Loading>
+                  : <SearchResult movies={movies} sendID={handleDetail}/>
              }
-           </div>
-
-           <div className="box">
-             <UserBtn onclick={() => setIsOpen2(!isOpen2)}>
-               {isOpen2 ? "–" : "+"}
-             </UserBtn>
-
-             {isOpen3 && detail && !detailLoading &&
-              <DetailView
-                   detail={detail} addWatched={addWatched} >
-                <StarRating
-                  userRating={userRating} setUserRating={setUserRating}/>
-              </DetailView>}
-
-             {isOpen2 && (
-                <>
-                  <WatchedSummary watched={watched}/>
-                  <ul className="list">
-                    {watched.map((movie) =>
-                      <WatchedMovie key={movie.id} movie={movie} onDelete={handleDeleteWatched}/>)}
-                  </ul>
-                </>
-             )}
-           </div>
-         </main>
+           </Box>
+           { !toggleShow &&
+              <Box onToggle={handleToggle}>
+                <WatchedSummary watched={watched}/>
+                <WatchedMovie movies={watched} onDelete={handleDeleteWatched}/>
+              </Box>
+           }
+           { toggleShow &&
+              (detailLoading
+                 ? <Loading>Movie detail is loading <br/>😂😂😂</Loading>
+                 : <Box onToggle={handleToggle}>
+                   <DetailView detail={detail} addWatched={addWatched}>
+                     <StarRating userRating={userRating} setUserRating={setUserRating}/>
+                   </DetailView>
+                 </Box>)
+           }
+         </Main>
        </>
   );
 }
 
-export function UserBtn({onclick, children, classname="btn-toggle"}) {
+function Main({children}) {
+  return <main className="main">{children}</main>
+}
+
+function Box({children, onToggle}) {
+  const [isOpen, setIsOpen] = useState(true);
+
   return (
-    <button
-      className={classname}
-      onClick={onclick}
-    >
-    {children}
-  </button>)
+       <div className='box'>
+         <UserBtn onclick={() => {
+           setIsOpen(!isOpen);
+           onToggle();
+         }}>
+           {isOpen ? "–" : "+"}
+         </UserBtn>
+         {isOpen && children}
+       </div>
+  )
+}
+
+function Loading({children}) {
+  const style = {fontSize: '2rem', textAlign: 'center'}
+  return (
+       <div style={style} className='list'>
+         {children}
+       </div>
+  )
+}
+
+export function UserBtn({onclick, children, classname = "btn-toggle"}) {
+  return (
+     <button
+          className={classname}
+          onClick={onclick}
+     >
+       {children}
+     </button>)
 }

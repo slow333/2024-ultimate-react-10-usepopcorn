@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {URL} from "../components/config";
 
-export default function useAsyncDetail(id, setIsOpen3, setIsOpen2) {
+export default function useAsyncDetail(id, setToggleShow) {
 
   const [detail, setDetail] = useState(null);
   const [detailLoading, setDetailLoading] = useState(false);
@@ -28,8 +28,8 @@ export default function useAsyncDetail(id, setIsOpen3, setIsOpen2) {
         }
         setDetail(data);
         setDetailLoading(false);
-        setIsOpen3(true)
-        setIsOpen2(false)
+        setToggleShow(true);
+
       } catch (err) {
         console.error(err.message)
       }

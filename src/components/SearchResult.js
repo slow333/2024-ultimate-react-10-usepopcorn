@@ -1,17 +1,20 @@
-function SearchResult({ movie, sendId}) {
+function SearchResult({movies, sendID}) {
   return (
-       <li key={ movie.imdbID }>
-         <img src={ movie.Poster }
-              onError={({ currentTarget }) => {
-                currentTarget.onerror = null; // prevents looping
-                currentTarget.src='/img/26.jpg';
-              }}
-              alt={`${movie.Title} poster`}
-              onClick={() => sendId(movie.imdbID)}
-         />
-         <h3>{movie.Title}</h3>
-         <div><span>{movie.Year}</span></div>
-       </li>
+       <ul className="list">
+         {movies?.map((movie) =>
+              <li key={movie.imdbID}>
+                <img src={movie.poster}
+                     onError={({currentTarget}) => {
+                       currentTarget.onerror = null; // prevents looping
+                       currentTarget.src = '/img/26.jpg';
+                     }}
+                     alt={`${movie.title} poster`}
+                     onClick={() => sendID(movie.imdbID)}
+                />
+                <h3>{movie.title}</h3>
+                <div><span>{movie.year}</span></div>
+              </li>)}
+       </ul>
   );
 }
 

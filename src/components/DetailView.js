@@ -4,7 +4,7 @@ function DetailView({detail, addWatched, children}) {
   return (
     <div className='details'>
       <header>
-        <img src={detail.poster} alt={detail.title}/>
+        <img src={detail?.poster} alt={detail.title}/>
         <div>
           <h2>{detail.title}</h2>
           <p>imdb Rating : {detail.imdbRating}</p>
