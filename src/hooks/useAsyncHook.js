@@ -3,6 +3,7 @@ import {URL} from "../components/config";
 
 function useAsyncHook(query) {
   const [movies, setMovies] = useState([]);
+  const [mvError, setMvError] = useState('')
   const [movieLoading, setMovieLoading] = useState(false);
 
   useEffect(() => {
@@ -25,18 +26,21 @@ function useAsyncHook(query) {
           }
         })
         setMovies(movieData)
-        setMovieLoading(false)
       } catch (err) {
         console.log(err);
+        setMvError(err.message);
+      } finally {
+        setMovieLoading(false)
       }
     }
 
     if (query !== '') {
       getData();
+      setMvError('')
     }
   }, [query]);
 
-  return [movies, movieLoading];
+  return [movies, movieLoading, mvError];
 }
 
 export default useAsyncHook;

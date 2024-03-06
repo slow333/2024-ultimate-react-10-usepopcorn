@@ -14,7 +14,7 @@ StarRating.prototype = {
 }
 
 function StarRating({userRating, setUserRating, maxRating}) {
-  const [temp, setTemp] = useState();
+  const [temp, setTemp] = useState(0);
 
   let valueForColor = (temp === 0) ? userRating : temp
 
@@ -27,7 +27,8 @@ function StarRating({userRating, setUserRating, maxRating}) {
                onHoverIn={() => setTemp(idx + 1)}
                onHoverOut={() => setTemp(0)}
          />)}
-    <p style={{fontSize: '1.8rem', marginLeft: '0.5rem', padding: 0}}>{userRating || ""}</p>
+    <p style={{fontSize: '1.8rem', marginLeft: '0.5rem', padding: 0}}>
+      {temp || userRating || ""}</p>
   </div>
 }
 

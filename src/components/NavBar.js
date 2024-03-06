@@ -3,9 +3,9 @@ import {useState} from "react";
 function NavBar({ setQuery, movies}) {
   const [search, setSearch] = useState("");
   const style = {
-    background: "green", marginLeft: '2rem',
+    background: "#4ea", marginLeft: '2rem',
     padding: '1rem 2rem', borderRadius: '1.3rem',
-    fontSize: '1.8rem'
+    fontSize: '1.8rem', color:'#232'
   }
 
   return (

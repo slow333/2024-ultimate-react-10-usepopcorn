@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
 import {URL} from "../components/config";
 
-export default function useAsyncDetail(id, setToggleShow) {
+export default function useAsyncDetail(id, userRating) {
 
   const [detail, setDetail] = useState(null);
+  const [dtError, setEtError] = useState('')
   const [detailLoading, setDetailLoading] = useState(false);
 
   useEffect(() => {
@@ -24,21 +25,22 @@ export default function useAsyncDetail(id, setToggleShow) {
           ratings: data.Ratings,
           imdbRating: data.imdbRating,
           imdbID: data.imdbID,
-          userRating: '0',
+          userRating: `${userRating || 0}`,
         }
         setDetail(data);
-        setDetailLoading(false);
-        setToggleShow(true);
-
       } catch (err) {
-        console.error(err.message)
+        console.error(err.message);
+        setEtError(err.message);
+      } finally {
+        setDetailLoading(false);
       }
     }
 
     if (id !== '') {
       getData();
+      setEtError('');
     }
   },[id])
 
-  return [detail, detailLoading];
+  return [detail, detailLoading, dtError];
 }

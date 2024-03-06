@@ -1,10 +1,15 @@
-import StarRating from "./StarRating";
 
-function DetailView({detail, addWatched, children}) {
+function SelectedMovie({detail, isWatched, addWatched,onBack, children}) {
   return (
     <div className='details'>
+      <button className='btn-back' onClick={onBack}>&lt;</button>
       <header>
-        <img src={detail?.poster} alt={detail.title}/>
+        <img src={detail?.poster}
+             onError={({currentTarget}) => {
+               currentTarget.onerror = null; // prevents looping
+               currentTarget.src = '/img/26.jpg';
+             }}
+             alt={detail.title}/>
         <div>
           <h2>{detail.title}</h2>
           <p>imdb Rating : {detail.imdbRating}</p>
@@ -15,9 +20,9 @@ function DetailView({detail, addWatched, children}) {
       <section>
         <div className='rating'>
           {children}
-          <button className='btn-add'
-                  onClick={() => addWatched(detail)}>Add Watched
-          </button>
+          {isWatched ? '' : <button className='btn-add'
+                   onClick={() => addWatched(detail)}>Add Watched
+          </button>}
         </div>
         <div className='details-overview'>
           <h2>Plot</h2>
@@ -30,4 +35,4 @@ function DetailView({detail, addWatched, children}) {
   );
 }
 
-export default DetailView;
+export default SelectedMovie;

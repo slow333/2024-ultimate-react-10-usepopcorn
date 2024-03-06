@@ -1,11 +1,12 @@
 import {UserBtn} from "../App";
 
-function WatchedMovie({movies, onDelete}) {
+function WatchedMovie({movies, onDelete, onSelect}) {
   return (
        <ul className="list">
          {movies.map(movie =>
               <li key={movie.imdbID}>
-                <img src={movie.poster} alt={`${movie.title} poster`}/>
+                <img src={movie.poster} alt={`${movie.title} poster`}
+                onClick={() => onSelect(movie.imdbID, movie.userRating)}/>
                 <h3>{movie.title}</h3>
                 <div>
                   <p><span>⭐️</span> <span>{movie.imdbRating}</span></p>
